@@ -3,7 +3,7 @@
 ## Introdution  
 1. User Authentication:  
  Users can create accounts and log in securely.  
- Passwords are encrypted to ensure data security.  
+   
 2. Hotel Search:  
 Search for hotels based on price and date.  
 Filter options to refine search results.   
