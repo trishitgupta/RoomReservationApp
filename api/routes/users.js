@@ -4,17 +4,7 @@ import { verifyAdmin, verifyToken, verifyUser } from "../utils/verifyToken.js";
 
 const router=express.Router();
 
-// router.get("/checkauthentication",verifyToken,(req,res,next)=>{
-//     res.send("hello user your are logged in");
-// });
 
-// router.get("/checkuser/:id",verifyUser,(req,res,next)=>{
-//     res.send("hello user your are logged in and delete acc");
-// });
-
-// router.get("/checkadmin/:id:id",verifyAdmin,(req,res,next)=>{
-//     res.send("hello admin your are logged in and delete all acc");
-// });
 
 
 
