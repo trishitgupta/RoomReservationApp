@@ -2,26 +2,41 @@ import "./list.css";
 import Navbar from "../../components/navbar/Navbar";
 import Header from "../../components/header/Header";
 import { useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useContext,useState } from "react";
 import { format } from "date-fns";
 import { DateRange } from "react-date-range";
 import SearchItem from "../../components/searchItem/SearchItem";
 import useFetch from "../../hooks/useFetch.js"
-
+import { SearchContext } from "../../context/SearchContext";
+import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 const List = () => {
   const location = useLocation();
-  const [destination, setDestination] = useState(location.state.destination);
-  const [dates, setDates] = useState(location.state.dates);
+  const [destination, setDestination] = useState(location?.state?.destination );
+  const [dates, setDates] = useState(location?.state?.dates);
   const [openDate, setOpenDate] = useState(false);
-  const [options, setOptions] = useState(location.state.options);
+  const [options, setOptions] = useState(location?.state?.options);
   const [min, setMin] = useState(undefined);
   const [max, setMax] = useState(undefined);
 
 const{data,loading,error,refetch}=useFetch(`/hotels?city=${destination}&min=${min|| 0}&max=${max|| 999}`)
 
+const navigate = useNavigate();
+const {dispatch}=useContext(SearchContext);
+
+
+
+
 const handleClick=()=>{
-  refetch();
+  dispatch({type:"NEW_SEARCH",payload:{destination,dates,options}});
+    navigate("/hotels", { state: { destination, dates, options } });
+ 
+  //refetch();
 }
+
+console.log(destination);
+console.log(dates);
+console.log(options);
 
   return (
     <div>
@@ -33,7 +48,9 @@ const handleClick=()=>{
             <h1 className="lsTitle">Search</h1>
             <div className="lsItem">
               <label>Destination</label>
-              <input placeholder={destination} type="text" />
+              <input placeholder={destination} type="text" 
+              className="headerSearchInput"
+              onChange={(e) => setDestination(e.target.value)} />
             </div>
             <div className="lsItem">
               <label>Check-in Date</label>
@@ -70,7 +87,11 @@ const handleClick=()=>{
                     type="number"
                     min={1}
                     className="lsOptionInput"
-                    placeholder={options.adult}
+                    value={options.adult}
+                    onChange={(e) => {
+                      setOptions({...options, adult: parseInt(e.target.value)})
+                    }}
+                    
                   />
                 </div>
                 <div className="lsOptionItem">
@@ -79,7 +100,12 @@ const handleClick=()=>{
                     type="number"
                     min={0}
                     className="lsOptionInput"
-                    placeholder={options.children}
+                    value={options.children}
+                    onChange={(e) => {
+                      setOptions({...options, children: parseInt(e.target.value)})
+                    }}
+                    
+                   
                   />
                 </div>
                 <div className="lsOptionItem">
@@ -88,7 +114,11 @@ const handleClick=()=>{
                     type="number"
                     min={1}
                     className="lsOptionInput"
-                    placeholder={options.room}
+                    value={options.room}
+                    onChange={(e) => {
+                      setOptions({...options, room: parseInt(e.target.value)})
+                    }}
+                    
                   />
                 </div>
               </div>
